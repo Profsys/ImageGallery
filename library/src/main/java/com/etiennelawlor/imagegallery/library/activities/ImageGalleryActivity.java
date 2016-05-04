@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
@@ -28,7 +31,17 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private static ImageGalleryAdapter.ImageThumbnailLoader sImageThumbnailLoader;
+
+    public static void setAddHandler(ImageGalleryAdd addHandler) {
+        ImageGalleryActivity.addHandler = addHandler;
+    }
+
+    private static ImageGalleryAdd addHandler;
     // endregion
+
+    public interface ImageGalleryAdd {
+        public void addMenuItemPressed();
+    }
 
     // region Lifecycle Methods
     @Override
@@ -58,12 +71,26 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
 
         setUpRecyclerView();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.image_gallery_activity_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     // endregion
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return true;
+        }
+        else if (item.getItemId() == R.id.action_add) {
+            if (addHandler != null) {
+                addHandler.addMenuItemPressed();
+            }
             return true;
         } else {
             return super.onOptionsItemSelected(item);
