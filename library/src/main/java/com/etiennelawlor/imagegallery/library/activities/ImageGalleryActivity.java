@@ -22,6 +22,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
 
     // region Member Variables
     private ArrayList<String> mImages;
+    private ArrayList<String> comments;
     private String mTitle;
 
     private Toolbar mToolbar;
@@ -39,6 +40,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
             Bundle extras = intent.getExtras();
             if (extras != null) {
                 mImages = extras.getStringArrayList("images");
+                mImages = extras.getStringArrayList("comments");
                 mTitle = extras.getString("title");
             }
         }
@@ -80,6 +82,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
         Intent intent = new Intent(ImageGalleryActivity.this, FullScreenImageGalleryActivity.class);
 
         intent.putStringArrayListExtra("images", mImages);
+        intent.putStringArrayListExtra("comments", mImages);
         intent.putExtra("position", position);
 
         startActivity(intent);

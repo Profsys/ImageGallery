@@ -20,6 +20,7 @@ public class FullScreenImageGalleryActivity extends AppCompatActivity implements
 
     // region Member Variables
     private List<String> mImages;
+    private List<String> mComments;
     private int mPosition;
     private static FullScreenImageGalleryAdapter.FullScreenImageLoader sFullScreenImageLoader;
 
@@ -70,6 +71,7 @@ public class FullScreenImageGalleryActivity extends AppCompatActivity implements
             Bundle extras = intent.getExtras();
             if (extras != null) {
                 mImages = extras.getStringArrayList("images");
+                mComments = extras.getStringArrayList("comments");
                 mPosition = extras.getInt("position");
             }
         }
@@ -128,7 +130,11 @@ public class FullScreenImageGalleryActivity extends AppCompatActivity implements
 
             ActionBar actionBar = getSupportActionBar();
             if(actionBar != null){
-                actionBar.setTitle(String.format("%d/%d", (position + 1), totalPages));
+                if (mComments != null && mComments.size() > position+1) {
+                    actionBar.setTitle(mComments.get(position+1));
+                } else {
+                    actionBar.setTitle(String.format("%d/%d", (position + 1), totalPages));
+                }
             }
         }
     }
