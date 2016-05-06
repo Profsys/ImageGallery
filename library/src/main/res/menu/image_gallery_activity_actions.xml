@@ -2,8 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:profsys="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_add"
-        android:icon="@android:drawable/ic_input_add"
+        android:id="@+id/action_new_picture"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:orderInCategory="100"
         profsys:showAsAction="always"
-        android:title="@string/plus" />
+        android:title="Camera" />
+    <item
+        android:id="@+id/action_select_picture"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:orderInCategory="100"
+        profsys:showAsAction="always"
+        android:title="Gallery" />
 </menu>

@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +22,11 @@ import java.util.ArrayList;
 
 public class ImageGalleryActivity extends AppCompatActivity implements ImageGalleryAdapter.OnImageClickListener, ImageGalleryAdapter.ImageThumbnailLoader {
 
-    // region Member Variables
+    public static int CAMERA = 1;
+    public static int GALLERY = 2;
+
+
+        // region Member Variables
     private ArrayList<String> mImages;
     private ArrayList<String> mComments;
     private String mTitle;
@@ -40,7 +43,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
     // endregion
 
     public interface ImageGalleryAdd {
-        public void addMenuItemPressed();
+        public void menuItemPressed(int itemId);
     }
 
     // region Lifecycle Methods
@@ -83,18 +86,21 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
             onBackPressed();
             return true;
         }
-        else if (item.getItemId() == R.id.action_add) {
-            if (addHandler != null) {
-                addHandler.addMenuItemPressed();
+        else {
+            if (itemId == R.id.action_new_picture) {
+                addHandler.menuItemPressed(CAMERA);
+                return true;
+            } else if (itemId == R.id.action_select_picture) {
+                addHandler.menuItemPressed(GALLERY);
+                return true;
             }
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
