@@ -1,5 +1,6 @@
 package com.etiennelawlor.imagegallery.library.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -43,7 +44,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
     // endregion
 
     public interface ImageGalleryAdd {
-        public void menuItemPressed(int itemId);
+        public void menuItemPressed(int itemId, Activity activity);
     }
 
     // region Lifecycle Methods
@@ -93,10 +94,10 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
         }
         else {
             if (itemId == R.id.action_new_picture) {
-                addHandler.menuItemPressed(CAMERA);
+                addHandler.menuItemPressed(CAMERA, this);
                 return true;
             } else if (itemId == R.id.action_select_picture) {
-                addHandler.menuItemPressed(GALLERY);
+                addHandler.menuItemPressed(GALLERY, this);
                 return true;
             }
         }
