@@ -36,6 +36,9 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
     private RecyclerView mRecyclerView;
     private static ImageGalleryAdapter.ImageThumbnailLoader sImageThumbnailLoader;
 
+    private boolean isReadOnly = false;
+    public static String IS_READ_ONLY = "isReadOnly";
+
     public static void setAddHandler(ImageGalleryAdd addHandler) {
         ImageGalleryActivity.addHandler = addHandler;
     }
@@ -59,6 +62,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
                 mImages = extras.getStringArrayList("images");
                 mComments = extras.getStringArrayList("comments");
                 mTitle = extras.getString("title");
+                isReadOnly = extras.getBoolean(IS_READ_ONLY);
             }
         }
 
@@ -80,6 +84,8 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.image_gallery_activity_actions, menu);
+        menu.findItem(R.id.action_select_picture).setVisible(!isReadOnly);
+        menu.findItem(R.id.action_new_picture).setVisible(!isReadOnly);
         return super.onCreateOptionsMenu(menu);
     }
 
