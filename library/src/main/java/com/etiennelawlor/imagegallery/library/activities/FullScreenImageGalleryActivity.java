@@ -125,18 +125,24 @@ public class FullScreenImageGalleryActivity extends AppCompatActivity implements
     }
 
     private void setActionBarTitle(int position) {
-        if (mViewPager != null && mImages.size() > 1) {
-            int totalPages = mViewPager.getAdapter().getCount();
-
-            ActionBar actionBar = getSupportActionBar();
-            if(actionBar != null){
-                if (mComments != null && mComments.size() > position+1) {
-                    actionBar.setTitle(mComments.get(position+1));
-                } else {
-                    actionBar.setTitle(String.format("%d/%d", (position + 1), totalPages));
-                }
-            }
+        if (mViewPager == null  || mImages.isEmpty()) {
+            return;
         }
+
+        int totalPages = mViewPager.getAdapter().getCount();
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar == null){
+            return;
+        }
+
+        if (mComments == null || mComments.size() < position) {
+            actionBar.setTitle(
+                    String.format("%d/%d", (position + 1), totalPages));
+            return;
+        }
+
+        actionBar.setTitle(mComments.get(position));
     }
 
     private void removeListeners() {
