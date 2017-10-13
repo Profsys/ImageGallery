@@ -3,6 +3,7 @@ package com.etiennelawlor.imagegallery.library.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.etiennelawlor.imagegallery.library.R;
@@ -29,6 +31,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
 
         // region Member Variables
     private ArrayList<String> mImages;
+    private ArrayList<String> mFolders;
     private ArrayList<String> mComments;
     private String mTitle;
 
@@ -48,6 +51,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
 
     public interface ImageGalleryAdd {
         public void menuItemPressed(int itemId, Activity activity);
+        public void onFolderClick(String folderId, Activity activity);
     }
 
     // region Lifecycle Methods
@@ -60,6 +64,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
             Bundle extras = intent.getExtras();
             if (extras != null) {
                 mImages = extras.getStringArrayList("images");
+                mFolders = extras.getStringArrayList("folders");
                 mComments = extras.getStringArrayList("comments");
                 mTitle = extras.getString("title");
                 isReadOnly = extras.getBoolean(IS_READ_ONLY);
@@ -127,12 +132,22 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
 
         startActivity(intent);
     }
+
+    @Override
+    public void onFolderClick(String folderId) {
+        addHandler.onFolderClick(folderId, this);
+    }
     // endregion
 
     // region ImageGalleryAdapter.ImageThumbnailLoader Methods
     @Override
     public void loadImageThumbnail(ImageView iv, String imageUrl, int dimension) {
         sImageThumbnailLoader.loadImageThumbnail(iv, imageUrl, dimension);
+    }
+
+    @Override
+    public void loadFolderThumbnail(ImageView iv, Button bt, int pos, int dimension) {
+        sImageThumbnailLoader.loadFolderThumbnail(iv, bt, pos, dimension);
     }
     // endregion
 
@@ -152,7 +167,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(ImageGalleryActivity.this, numOfColumns));
         mRecyclerView.addItemDecoration(new GridSpacesItemDecoration(ImageGalleryUtils.dp2px(this, 2), numOfColumns));
-        ImageGalleryAdapter imageGalleryAdapter = new ImageGalleryAdapter(mImages);
+        ImageGalleryAdapter imageGalleryAdapter = new ImageGalleryAdapter(mImages, mFolders);
         imageGalleryAdapter.setOnImageClickListener(this);
         imageGalleryAdapter.setImageThumbnailLoader(this);
 
