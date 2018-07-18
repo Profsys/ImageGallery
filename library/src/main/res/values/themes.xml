@@ -11,4 +11,8 @@
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
+    <style name="AlertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
 </resources>

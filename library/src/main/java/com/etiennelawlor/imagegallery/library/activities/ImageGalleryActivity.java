@@ -1,6 +1,7 @@
 package com.etiennelawlor.imagegallery.library.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.Image;
@@ -23,13 +24,15 @@ import com.etiennelawlor.imagegallery.library.view.GridSpacesItemDecoration;
 
 import java.util.ArrayList;
 
-public class ImageGalleryActivity extends AppCompatActivity implements ImageGalleryAdapter.OnImageClickListener, ImageGalleryAdapter.ImageThumbnailLoader {
+public class ImageGalleryActivity extends AppCompatActivity
+        implements ImageGalleryAdapter.OnImageClickListener,
+        ImageGalleryAdapter.ImageThumbnailLoader {
 
     public static int CAMERA = 1;
     public static int GALLERY = 2;
 
 
-        // region Member Variables
+    // region Member Variables
     private ArrayList<String> mImages;
     private ArrayList<String> mFolders;
     private ArrayList<String> mComments;
@@ -50,8 +53,8 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
     // endregion
 
     public interface ImageGalleryAdd {
-        public void menuItemPressed(int itemId, Activity activity);
-        public void onFolderClick(String folderId, Activity activity);
+        void menuItemPressed(int itemId, Activity activity);
+        void onFolderClick(String folderId, ImageGalleryActivity activity);
     }
 
     // region Lifecycle Methods
@@ -178,4 +181,12 @@ public class ImageGalleryActivity extends AppCompatActivity implements ImageGall
         sImageThumbnailLoader = loader;
     }
     // endregion
+
+    public void simpleAlertDialog(String title, String message) {
+        new AlertDialog.Builder(this, R.style.AlertDialogThemeLight)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
+    }
 }
