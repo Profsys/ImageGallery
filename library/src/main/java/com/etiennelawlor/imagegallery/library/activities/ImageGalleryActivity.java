@@ -145,12 +145,16 @@ public class ImageGalleryActivity extends AppCompatActivity
     // region ImageGalleryAdapter.ImageThumbnailLoader Methods
     @Override
     public void loadImageThumbnail(ImageView iv, String imageUrl, int dimension) {
-        sImageThumbnailLoader.loadImageThumbnail(iv, imageUrl, dimension);
+        if (sImageThumbnailLoader != null) {
+            sImageThumbnailLoader.loadImageThumbnail(iv, imageUrl, dimension);
+        }
     }
 
     @Override
     public void loadFolderThumbnail(ImageView iv, Button bt, int pos, int dimension) {
-        sImageThumbnailLoader.loadFolderThumbnail(iv, bt, pos, dimension);
+        if (sImageThumbnailLoader != null) {
+            sImageThumbnailLoader.loadFolderThumbnail(iv, bt, pos, dimension);
+        }
     }
     // endregion
 
