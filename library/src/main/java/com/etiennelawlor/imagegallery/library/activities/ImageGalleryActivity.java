@@ -31,6 +31,16 @@ public class ImageGalleryActivity extends AppCompatActivity
     public static int CAMERA = 1;
     public static int GALLERY = 2;
 
+    private static ImageGalleryAdapter.ImageThumbnailLoader sImageThumbnailLoader;
+    private static ImageGalleryAdd addHandler;
+
+    public static void setAddHandler(ImageGalleryAdd addHandler) {
+        ImageGalleryActivity.addHandler = addHandler;
+    }
+
+    public static void setImageThumbnailLoader(ImageGalleryAdapter.ImageThumbnailLoader loader) {
+        sImageThumbnailLoader = loader;
+    }
 
     // region Member Variables
     private ArrayList<String> mImages;
@@ -40,16 +50,11 @@ public class ImageGalleryActivity extends AppCompatActivity
 
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
-    private static ImageGalleryAdapter.ImageThumbnailLoader sImageThumbnailLoader;
 
     private boolean isReadOnly = false;
     public static String IS_READ_ONLY = "isReadOnly";
 
-    public static void setAddHandler(ImageGalleryAdd addHandler) {
-        ImageGalleryActivity.addHandler = addHandler;
-    }
 
-    private static ImageGalleryAdd addHandler;
     // endregion
 
     public interface ImageGalleryAdd {
@@ -107,12 +112,14 @@ public class ImageGalleryActivity extends AppCompatActivity
             return true;
         }
         else {
-            if (itemId == R.id.action_new_picture) {
-                addHandler.menuItemPressed(CAMERA, this);
-                return true;
-            } else if (itemId == R.id.action_select_picture) {
-                addHandler.menuItemPressed(GALLERY, this);
-                return true;
+            if (addHandler != null) {
+                if (itemId == R.id.action_new_picture) {
+                    addHandler.menuItemPressed(CAMERA, this);
+                    return true;
+                } else if (itemId == R.id.action_select_picture) {
+                    addHandler.menuItemPressed(GALLERY, this);
+                    return true;
+                }
             }
         }
         return super.onOptionsItemSelected(item);
@@ -138,7 +145,9 @@ public class ImageGalleryActivity extends AppCompatActivity
 
     @Override
     public void onFolderClick(String folderId) {
-        addHandler.onFolderClick(folderId, this);
+        if (addHandler != null) {
+            addHandler.onFolderClick(folderId, this);
+        }
     }
     // endregion
 
@@ -181,9 +190,6 @@ public class ImageGalleryActivity extends AppCompatActivity
         mRecyclerView.setAdapter(imageGalleryAdapter);
     }
 
-    public static void setImageThumbnailLoader(ImageGalleryAdapter.ImageThumbnailLoader loader) {
-        sImageThumbnailLoader = loader;
-    }
     // endregion
 
     public void simpleAlertDialog(String title, String message) {
